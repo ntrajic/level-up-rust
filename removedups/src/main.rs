@@ -1,11 +1,48 @@
-fn unique(a: Vec<i32>) -> Vec<i32> {
-    todo!()
-}
+// Pythong solution:
+// from typing import List
+// class ListNode:
+// def __init__(self, data=0, next_node=None):
+//     self.data : int = data
+//     self.next = next_node
+// #
+// def __repr__(self):
+//     return f'data: {self.data}'
+// #
+//
+// #
+//
+// # INPUT: 1->2->2->2->3->3->4->5->5->5->6->None 
+// # OUT: 1->2->3->4->5->6->None
+// def remove_dups_from_sorted_list(head: ListNode):
+//     ...
+//     cur: ListNode = head
+//     while cur:
+//         ...
+//         dist: ListNode = cur.next # dist is next distinct element
+//         while dist and dist.data == cur.data:
+//             dist = dist.next    # skip dups
+//         #
+//         # dist points here to actual next distinct elem
+//         cur.next = dist         # in updated list: cur.next may point to phy.next distinct, or after skipping dups distinct 
+//         cur = dist              # actual move to process the next distinct, prep for the next while loop iter
+//     #
+//     return head
+// #
 
-// advanced 1: use generic types
-// fn unique(a: Vec<T>) -> Vec<T> {
-//     todo!();
+
+
+// fn unique(mut a: Vec<i32>) -> Vec<i32> {
+//    a.sort_unstable();
+//    a.dedup();                                                        
+//    a
 // }
+
+//advanced 1: use generic types
+fn unique<T:Ord>(mut a: Vec<T>) -> Vec<T> {
+    a.sort_by(|x,y| x.cmp(y));
+    a.dedup();
+    a
+}
 
 // advanced 2: keep items in order
 // fn unique(a: Iterable<T>) -> Vec<T> {
@@ -25,7 +62,7 @@ fn main() {
 
 #[test]
 fn empty_list() {
-    let input = vec![];
+    let input: Vec<i32> = vec![];
     let expected_output = vec![];
     let actual_output = unique(input);
     assert_eq!(actual_output, expected_output);
