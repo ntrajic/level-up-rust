@@ -66,9 +66,6 @@ fn unsorted_list() {
     assert_eq!(actual_output, expected_output);
 }
 
-
-
-
 // test driven:
 // make test, until all tests pass
 //
