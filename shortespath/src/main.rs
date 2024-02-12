@@ -1,4 +1,5 @@
-use std::collections::{HashMap, HashSet};
+use std::cmp::Ordering;
+use std::collections::{BinaryHeap, HashMap, HashSet};
 
 type Node = usize;
 type Cost = usize;
@@ -31,9 +32,79 @@ impl Graph {
     }
 }
 
+#[derive(Clone, Eq, PartialEq)]
+struct Step {
+    cost: Cost,
+    position: Node,
+    history: Vec<Node>,
+}
+
+impl Step {
+    fn new(position: Node, cost: Cost, history: Vec<Node>) -> Self {
+        Step {
+            cost,
+            position,
+            history,
+        }
+    }
+
+    fn from_start(start: Node) -> Self {
+        Step {
+            cost: 0,
+            position: start,
+            history: vec![],
+        }
+    }
+}
+
+impl Ord for Step {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other
+            .cost.cmp(&self.cost)
+            .then_with(|| self.position.cmp(&other.position))
+    }
+}
+
+impl PartialOrd for Step {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
 
 fn shortest_path(g: &Graph, start: Node, goal: Node) -> Option<(Vec<Node>, Cost)> {
-    todo!()
+    let mut dist: HashMap<Node, Cost> = g.nodes
+        .iter()
+        .map(|&x| if x == start { (x, 0)} else { (x, usize::MAX)} )
+        .collect();  
+
+    let mut priority_queue = BinaryHeap::new();
+
+    priority_queue.push(Step::from_start(start));
+
+    while let Some(Step { cost, position, mut history }) = priority_queue.pop() {
+        if position == goal {
+            history.push(goal);
+            return Some((history, cost)); 
+        }
+
+        if let Some(destinations) = &g.edges.get(&position) {
+            for &(next_destination, next_cost) in destinations.iter() {
+
+                if next_cost < dist[&next_destination] {
+                    let mut next = Step::new(next_destination, cost + next_cost, history.clone());
+                    next.history.push(position);
+                    priority_queue.push(next);
+    
+                    if let Some(old_cost) = dist.get_mut(&next_destination){
+                        *old_cost = next_cost;
+                    }
+                }
+            }
+        }
+        
+    }
+
+    None
 }
 
 fn main() {
@@ -55,3 +126,19 @@ fn large_graph() {
     assert!(path.is_some());
     assert_eq!(path.unwrap().1, 24); 
 }
+
+
+// ntrajic@DESKTOP-6PK7L32:/mnt/c/SRC/Rust/level-up-rust/shortespath$ make test
+// cargo test --quiet
+//
+// running 1 test
+// .
+// test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+
+// ntrajic@DESKTOP-6PK7L32:/mnt/c/SRC/Rust/level-up-rust/shortespath$ make run
+// cargo run                               # won't work, cargo run -- play --name "Marco"   # where "Marco" is 2nd arg after play, supplided ater --name
+//    Compiling shortespath v0.1.0 (/mnt/c/SRC/Rust/level-up-rust/shortespath)
+//     Finished dev [unoptimized + debuginfo] target(s) in 5.93s
+//      Running `target/debug/shortespath`
+// 1000->9000, [1000, 12, 16, 1849, 3006, 9000] 24
