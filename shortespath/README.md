@@ -1,13 +1,8 @@
-Level Up Rust: Challenge 17
-We need to decrypt a secret message. The message has been encrypted using a Vigenère cipher.
+Level Up Rust: Challenge 16
+Given a list of distances between cities, e.g. A -> B 50, B -> C 10, calculate the shortest route between two points, e.g. A and C.
 
 Testing your solution
 Use cargo test to evaluate yourself:
 
 $ cargo test
-...
-
-running 2 tests
-test abc ... ok
-test round_trip ... ok
 ...
