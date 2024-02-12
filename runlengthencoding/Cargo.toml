@@ -1,4 +1,4 @@
 [package]
-authors = ["Tim McNamara <tim@mcnamara.nz>"]
-name = "hello_rust_learners"
+authors = ["ntrajic"]
+name = "runlengthencoding"
 version = "0.1.0"
