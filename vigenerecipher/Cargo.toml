@@ -1,0 +1,4 @@
+[package]
+authors = ["ntrajic"]
+name = "vigenerecipher"
+version = "0.1.0"

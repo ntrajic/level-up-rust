@@ -1,0 +1,4 @@
+[package]
+authors = ["ntrajic"]
+name = "runlengthencoding"
+version = "0.1.0"

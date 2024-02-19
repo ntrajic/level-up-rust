@@ -1,0 +1,4 @@
+[package]
+authors = ["ntrajic"]
+name = "caseinsensitivesort"
+version = "0.1.0"
