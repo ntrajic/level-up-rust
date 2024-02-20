@@ -1,6 +1,7 @@
+use std::fs;
 use std::path;
 
-trait FileMetadata {                                // implement interface/trait FileMetadata w/ 3 functions
+trait FileMetadata {
     fn exists(&self) -> bool;
 
     fn is_writeable(&self) -> bool;
@@ -10,15 +11,17 @@ trait FileMetadata {                                // implement interface/trait
 
 impl FileMetadata for path::Path {
     fn is_readable(&self) -> bool {
-        todo!();
+        fs::File::open(self).is_ok()
     }
 
     fn is_writeable(&self) -> bool {
-        todo!();
+        fs::metadata(self)
+            .map(|m| !m.permissions().readonly())
+            .unwrap_or(false)
     }
 
     fn exists(&self) -> bool {
-        todo!();
+        self.exists()
     }
 }
 
@@ -28,10 +31,11 @@ fn main() {
 
 #[test]
 fn writeable() {
-    use std::fs;
     use tempfile;
 
     let f = tempfile::NamedTempFile::new().unwrap();
+
+
     assert!(f.path().is_writeable());
 
     fs::remove_file(f.path()).unwrap();
@@ -39,7 +43,6 @@ fn writeable() {
 
 #[test]
 fn read_only() {
-    use std::fs;
     use tempfile;
 
     let f = tempfile::NamedTempFile::new().unwrap();
@@ -51,6 +54,13 @@ fn read_only() {
     fs::remove_file(f.path()).unwrap();
 }
 
+
+// $ make test
+// cargo test --quiet
+//
+// running 2 tests
+// ..
+// test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
 
 // $ make test
