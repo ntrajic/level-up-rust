@@ -1,4 +1,4 @@
 [package]
 authors = ["ntrajic>"]
-name = "validatgeisbn"
+name = "validateisbn"
 version = "0.1.0"
