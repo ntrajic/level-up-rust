@@ -112,6 +112,18 @@ fn out_of_bounds() {
 
 // $ make test
 // cargo test --quiet
+// warning: crate `explainRGBhexColor` should have a snake case name
+//   |
+//   = help: convert the identifier to snake case: `explain_rgbhex_color`
+//   = note: `#[warn(non_snake_case)]` on by default
+//
+//
+// running 6 tests
+// ......
+// test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+// $ make test
+// cargo test --quiet
 // error[E0046]: not all trait items implemented, missing: `r`, `g`, `b`
 //   --> src/main.rs:15:1
 //    |
